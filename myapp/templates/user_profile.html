@@ -49,7 +49,33 @@
             gap: 12px;
             margin-bottom: 12px;
         }
+
+        .button-new-post {
+            background-color: #719ebf;
+            border: 0;
+            border-radius: 8px;
+            padding: 8px;
+            margin-top: 4px;
+        }
     </style>
+
+    <script>
+        function create_post() {
+            const postTitle = prompt("Введите пост:")
+            fetch("/posts/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: postTitle,
+                    likes: 0,
+                    date: new Date().toISOString(),
+                    user: Number("{{ id }}")
+                })
+            })
+        }
+    </script>
 </head>
 <body>
     <div class="block">
@@ -67,6 +93,8 @@
         </div>
         <div class="profile-join-date">Присоединился {{ date_joined }}</div>
         <div class="profile-subs">0 подписок, 0 подписчиков</div>
+
+        <button class="button-new-post" onclick="create_post();">+ Новый пост</button>
     </div>
     
     {% for item in posts %}

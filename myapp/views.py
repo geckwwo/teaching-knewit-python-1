@@ -17,7 +17,7 @@ def user_profile(request, username):
     
     user = users[0]
 
-    posts = Post.objects.all().filter(user__username=username).order_by("date").reverse()
+    posts = Post.objects.all().filter(user__username=username).order_by("pk").reverse()
     
     return render(request, 'user_profile.html', {
         "posts": posts,
