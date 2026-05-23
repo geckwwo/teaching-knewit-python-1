@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from myapp.models import Post
 from django.contrib.auth.models import User
+from .serializers import PostSerializer
+from rest_framework import viewsets
 import time
 
 # Create your views here.
@@ -15,7 +17,7 @@ def user_profile(request, username):
     
     user = users[0]
 
-    posts = Post.objects.all().filter(user__username=username)
+    posts = Post.objects.all().filter(user__username=username).order_by("date").reverse()
     
     return render(request, 'user_profile.html', {
         "posts": posts,
@@ -24,3 +26,7 @@ def user_profile(request, username):
         "id": user.pk,
         "date_joined": user.date_joined
     })
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
